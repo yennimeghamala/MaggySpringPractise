@@ -17,13 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -37,9 +42,59 @@ import jakarta.servlet.MultipartConfigElement;
 
 
 
-@RestController
+@Controller
+@ResponseBody
 @RequestMapping("/students")
 public class StudentController {
+	
+	private StudentService studentService;
+	@Autowired
+	public StudentController(StudentService theStudentService, StudentDAO theStudentDAO) {
+		
+		studentService = theStudentService;
+		//studentDAO =theStudentDAO;
+	}
+	
+	//@GetMapping(value = "/students/{id}")
+	@GetMapping("/{id}")
+	public ResponseEntity<Student>  getStudentById (@PathVariable("id") int id){
+		System.out.println("id:  "+id);
+	    Student foundStudent = studentService.findById(id);
+	    if (foundStudent == null) {
+	      //  return ResponseEntity.notFound().build();
+	    	return new ResponseEntity(HttpStatus.NOT_FOUND);
+	    } else {
+	    	return new ResponseEntity<Student>(foundStudent, HttpStatus.OK);
+
+	        //return ResponseEntity.ok(foundStudent);
+	    }
+	}
+	/*
+	@GetMapping("/get") 
+	public String get(Model model)    {
+ 
+        // Creating object of ConsumeResponse class
+        ConsumeResponse data = new ConsumeResponse();
+        model.addAttribute("response",
+                           data.get().getBody());
+        model.addAttribute("headers",
+                           data.get().getHeaders());
+ 
+        return "output";
+    }
+	*/
+	@GetMapping("/findId")
+	@ResponseBody
+	public String findbyId(@PathVariable("id") int theId, Model model) {
+			System.out.println("Student id: "+theId);
+		// find the employee
+		Student student=studentService.findById(theId);
+		   model.addAttribute("student", student);
+		  
+		// redirect to /employees/list
+		return "studentData";
+	}
+	
 	/*
 	@Value("${file.upload-dir}")
     private  String uploadDir;

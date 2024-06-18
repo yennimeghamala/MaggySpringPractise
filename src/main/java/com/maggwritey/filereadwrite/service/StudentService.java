@@ -11,4 +11,6 @@ import com.maggwritey.filereadwrite.entity.Student;
 public interface StudentService {
 
 	List<Student> findAll();
+	Student findById(int theId);
+
 }

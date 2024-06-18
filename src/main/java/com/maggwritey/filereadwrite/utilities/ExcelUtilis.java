@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -21,7 +22,7 @@ public class ExcelUtilis {
 	
 	private StudentDAO studentDAO;
 	private StudentService studentService;
-
+@Autowired
 	public ExcelUtilis(StudentDAO studentDAO, StudentService studentService) {
 		super();
 		this.studentService = studentService;
@@ -73,5 +74,9 @@ public class ExcelUtilis {
 			theModel.addAttribute("students", theStudents);
 
 			return "students/list-students";
-		}
-}
+			}
+
+	
+		 
+	 }
+

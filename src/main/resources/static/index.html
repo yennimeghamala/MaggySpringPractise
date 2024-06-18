@@ -1,14 +1,54 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>File Upload</title>
+    <title>Student Details</title>
+    <link rel="stylesheet" type="text/css" href="/studentStyle.css">
+    <script>
+        async function fetchStudentDetails() {
+            var dataArray = [];
+            const id = document.getElementById("studentId").value;
+            const response = await fetch("/students/" + id);
+            var data = await response.json();
+            console.log(data);
+            dataArray[0] = data;
+
+            console.log(dataArray);
+            generateTable(dataArray);
+        }
+
+        async function generateTable(data) {
+            // Clear existing table body
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = '';
+
+            // Create table rows and cells from JSON data
+            data.forEach(function (row) {
+                var newRow = tableBody.insertRow();
+                Object.keys(row).forEach(function (key) {
+                    var cell = newRow.insertCell();
+                    cell.appendChild(document.createTextNode(row[key]));
+                });
+            });
+        }
+    </script>
 </head>
 <body>
-    <h1>File Upload</h1>
-    <form method="POST" enctype="multipart/form-data" action="/upload">
-        <input type="file" name="file" />
-        <button type="submit">Upload</button>
-    </form>
-    <p th:if="${message}" th:text="${message}"></p>
+    <h1>Student Details</h1>
+    <input type="number" id="studentId" name="studentId" required>
+    <button onclick="fetchStudentDetails()">Get Student Details</button>
+
+    <table id="jsonTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Data will be populated dynamically here -->
+        </tbody>
+    </table>
 </body>
 </html>

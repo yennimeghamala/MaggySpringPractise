@@ -1,0 +1,16 @@
+#jsonTable {
+    border-collapse: collapse; /* Merge table borders */
+    width: 100%;               /* Full width */
+    max-width: 600px;          /* Maximum width */
+    margin-top: 20px;          /* Space above the table */
+}
+
+#jsonTable th, #jsonTable td {
+    border: 1px solid #000;    /* Black border */
+    padding: 8px;              /* Padding inside cells */
+    text-align: left;          /* Left-align text */
+}
+
+#jsonTable th {
+    background-color: #f2f2f2; /* Light grey background for header */
+}

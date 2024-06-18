@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Details</title>
+    <script>
+        async function fetchStudentDetails() {
+            const studentId = document.getElementById('studentId').value;
+            const response = await fetch(`/findId`);
+            const student = await response.json();
+            
+            document.getElementById('studentId').innerText = student.id || 'N/A';
+            document.getElementById('studentFirstName').innerText = student.firstName || 'N/A';
+            document.getElementById('studentLatName').innerText = student.lastName || 'N/A';
+            document.getElementById('studentEmail').innerText = student.email || 'N/A';
+        }
+    </script>
+</head>
+<body>
+    <h1>Student Details</h1>
+    <input type="text" id="studentId" placeholder="Enter student ID">
+    <button onclick="fetchStudentDetails()">Get Student Details</button>
+    
+    <div>
+    <p><strong>Id:</strong> <span id="studentId">N/A</span></p>
+        <p><strong>FirstName:</strong> <span id="studentFirstName">N/A</span></p>
+        <p><strong>LastName:</strong> <span id="studentLastName">N/A</span></p>
+        <p><strong>Email:</strong> <span id="studentEmail">N/A</span></p>
+    </div>
+</body>
+</html>

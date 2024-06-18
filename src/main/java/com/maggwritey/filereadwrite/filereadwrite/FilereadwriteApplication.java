@@ -22,6 +22,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Component;
 import org.springframework.util.unit.DataSize;
 
 import com.maggwritey.filereadwrite.DAO.StudentDAO;
@@ -30,8 +32,10 @@ import com.maggwritey.filereadwrite.entity.Student;
 import jakarta.servlet.MultipartConfigElement;
 
 @SpringBootApplication
+@Component
 @ComponentScan(basePackages = "com.maggwritey.filereadwrite")
 @EntityScan("com.maggwritey.filereadwrite.entity")
+@EnableJpaRepositories(basePackages = "com.maggwritey.filereadwrite.DAO")
 public class FilereadwriteApplication {
 
 	public static void main(String[] args) {
