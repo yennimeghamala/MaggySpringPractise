@@ -2,8 +2,10 @@ package com.maggwritey.filereadwrite.filereadwrite;
 
 
 
-import com.maggwritey.filereadwrite.entity.User;
+
 import com.maggwritey.filereadwrite.DAO.UserRepository;
+import com.maggwritey.filereadwrite.entity.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,6 @@ public class DataLoader implements CommandLineRunner {
         user.setUsername("user");
         user.setPassword(passwordEncoder.encode("password"));
         
-        userRepository.save(user);
+ //       userRepository.save(user);
     }
 }
