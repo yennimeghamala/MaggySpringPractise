@@ -4,14 +4,13 @@ package com.maggwritey.filereadwrite.service;
 import com.maggwritey.filereadwrite.entity.User;
 import com.maggwritey.filereadwrite.DAO.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 
-@Service
-public class UserService implements UserDetailsService {
+//@Service
+/*public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -28,5 +27,5 @@ public class UserService implements UserDetailsService {
         builder.roles("USER");
 
         return builder.build();
-    }
-}
+    }*/
+
