@@ -11,7 +11,7 @@ import com.maggwritey.filereadwrite.entity.Student;
 
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl extends StudentService {
 @Autowired
 private StudentRepository studentRepository;
 public StudentServiceImpl(StudentRepository studentRepository) {
@@ -19,7 +19,7 @@ public StudentServiceImpl(StudentRepository studentRepository) {
 
 
 
-@Override
+
 public Student findById(int theId) {
 	Optional<Student> result = studentRepository.findById(theId);
 	

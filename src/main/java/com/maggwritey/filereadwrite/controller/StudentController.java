@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.maggwritey.filereadwrite.entity.Student;
 import com.maggwritey.filereadwrite.DAO.StudentDAO;
 import com.maggwritey.filereadwrite.entity.Student;
 import com.maggwritey.filereadwrite.service.StudentService;
@@ -43,156 +45,41 @@ import jakarta.servlet.MultipartConfigElement;
 
 
 @Controller
-@ResponseBody
-@RequestMapping("/students")
 public class StudentController {
-	
-	private StudentService studentService;
-	@Autowired
-	public StudentController(StudentService theStudentService, StudentDAO theStudentDAO) {
-		
-		studentService = theStudentService;
-		//studentDAO =theStudentDAO;
-	}
-	
-	//@GetMapping(value = "/students/{id}")
-	@GetMapping("/{id}")
-	public ResponseEntity<Student>  getStudentById (@PathVariable("id") int id){
-		System.out.println("id:  "+id);
-	    Student foundStudent = studentService.findById(id);
-	    if (foundStudent == null) {
-	      //  return ResponseEntity.notFound().build();
-	    	return new ResponseEntity(HttpStatus.NOT_FOUND);
-	    } else {
-	    	return new ResponseEntity<Student>(foundStudent, HttpStatus.OK);
 
-	        //return ResponseEntity.ok(foundStudent);
-	    }
-	}
-	/*
-	@GetMapping("/get") 
-	public String get(Model model)    {
- 
-        // Creating object of ConsumeResponse class
-        ConsumeResponse data = new ConsumeResponse();
-        model.addAttribute("response",
-                           data.get().getBody());
-        model.addAttribute("headers",
-                           data.get().getHeaders());
- 
-        return "output";
-    }
-	*/
-	@GetMapping("/findId")
-	@ResponseBody
-	public String findbyId(@PathVariable("id") int theId, Model model) {
-			System.out.println("Student id: "+theId);
-		// find the employee
-		Student student=studentService.findById(theId);
-		   model.addAttribute("student", student);
-		  
-		// redirect to /employees/list
-		return "studentData";
-	}
-	
-	/*
-	@Value("${file.upload-dir}")
-    private  String uploadDir;
-	private StudentDAO studentDAO;
-	private StudentService studentService;
-	@Autowired
-	public StudentController(StudentService theStudentService, StudentDAO theStudentDAO) {
-		 System.out.println(7);
-		studentService = theStudentService;
-		studentDAO =theStudentDAO;
-	}
-	
-	
-	
-    
-    @PostConstruct
-    public void init() {
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-    }
-/*
-    @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, StudentDAO studentDAO) {
-        System.out.println(1);
-    	if (file.isEmpty()) {
-            return "Please select a file to upload.";
-        }
+    @Autowired
+    private StudentService studentService;
 
-        try {
-            // Save the file
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadDir + "/" + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-            redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
-            
-            FileInputStream fis = new FileInputStream(uploadDir + "/" + file.getOriginalFilename());
-            Workbook workbook = WorkbookFactory.create(fis);
-            System.out.println(2);
-
-           Sheet sheet = workbook.getSheetAt(0); 
-           System.out.println(3);// Assuming the first sheet
-           Iterator<Row> rowIterator = sheet.iterator();
-
-           // Skip header row if necessary
-           if (rowIterator.hasNext()) {
-               rowIterator.next(); // Skip header row
-           }
-
-           while (rowIterator.hasNext()) {
-               Row row = rowIterator.next();
-               Student student = mapRowToStudent(row);
-              // students.add(student);
-               
-               System.out.println(4);
-               studentDAO.merge(student);
-               System.out.println(5);
-           }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Failed to upload the file.";
-        }
-        System.out.println(6);
-        return "students/student-upload-form";
-        
-    }
-    
-    @Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setMaxFileSize(DataSize.ofGigabytes(10)); // Use DataSize for setting max file size
-        factory.setMaxRequestSize(DataSize.ofGigabytes(10)); // Use DataSize for setting max request size
-        return factory.createMultipartConfig();
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("students", studentService.findAll());
+        model.addAttribute("newStudent", new Student());
+        return "index";
     }
 
-	
-	
-	
-	
-	
-	@PostMapping("/save")
-	public void saveExceltoDB(StudentDAO studentDAO) throws IOException{
-		
-	}
-	 
-	 @GetMapping("/list")
-	 public String listStudents(Model theModel) {
+    @PostMapping("/add")
+    public String addStudent(@ModelAttribute Student student) {
+        studentService.save(student);
+        return "redirect:/";
+    }
 
-			// get the employees from db
-			List<Student> theStudents = studentService.findAll();
-			
+    @PostMapping("/update")
+    public String updateStudent(@ModelAttribute Student student) {
+        studentService.save(student);
+        return "redirect:/";
+    }
 
-			// add to the spring model
-			theModel.addAttribute("students", theStudents);
+    @GetMapping("/delete/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        studentService.deleteById(id);
+        return "redirect:/";
+    }
 
-			return "students/list-students";
-		}
-*/
+    @GetMapping("/edit/{id}")
+    public String editStudent(@PathVariable int id, Model model) {
+        model.addAttribute("students", studentService.findAll());
+        model.addAttribute("newStudent", studentService.findById(id));
+        return "index";
+    }
+
 }
